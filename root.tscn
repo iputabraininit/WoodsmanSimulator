@@ -1,0 +1,472 @@
+[gd_scene load_steps=28 format=3 uid="uid://ds61na4yyd8mx"]
+
+[ext_resource type="Texture2D" uid="uid://bxf3qyqacdbrs" path="res://assets/town_and_dungeon_tilemap.png" id="1_53mlo"]
+[ext_resource type="Script" path="res://ClickableWorldBehaviour.gd" id="1_nxi4c"]
+[ext_resource type="Texture2D" uid="uid://divr2xnsg03h" path="res://assets/particles/smoke_01.png" id="2_jee0f"]
+[ext_resource type="NavigationPolygon" uid="uid://h2gkms80gxkf" path="res://assets/new_navigation_polygon.tres" id="2_qvikc"]
+[ext_resource type="Texture2D" uid="uid://dohdckaifufau" path="res://assets/texture_atlas.tres" id="3_67muf"]
+[ext_resource type="PackedScene" uid="uid://3eck37jacdw1" path="res://move_targetable.tscn" id="3_xo8uv"]
+[ext_resource type="PackedScene" uid="uid://66kyqxlyft4u" path="res://world_object.tscn" id="4_lwsc3"]
+[ext_resource type="Script" path="res://CommandInputBehaviour.gd" id="6_2ate2"]
+[ext_resource type="Script" path="res://AvatarBehaviour.gd" id="6_55abl"]
+[ext_resource type="Script" path="res://CommandHistoryLogger.gd" id="6_cxb2q"]
+[ext_resource type="Script" path="res://CommandProcessorBehaviour.gd" id="9_5miip"]
+[ext_resource type="Script" path="res://TrackerBehaviour.gd" id="12_eoniw"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1pjos"]
+texture = ExtResource("1_53mlo")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+16:0/0 = 0
+17:0/0 = 0
+18:0/0 = 0
+19:0/0 = 0
+20:0/0 = 0
+21:0/0 = 0
+22:0/0 = 0
+23:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+8:1/0 = 0
+9:1/0 = 0
+10:1/0 = 0
+11:1/0 = 0
+12:1/0 = 0
+13:1/0 = 0
+14:1/0 = 0
+15:1/0 = 0
+16:1/0 = 0
+17:1/0 = 0
+18:1/0 = 0
+19:1/0 = 0
+20:1/0 = 0
+21:1/0 = 0
+22:1/0 = 0
+23:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+8:2/0 = 0
+9:2/0 = 0
+10:2/0 = 0
+11:2/0 = 0
+12:2/0 = 0
+13:2/0 = 0
+14:2/0 = 0
+15:2/0 = 0
+16:2/0 = 0
+17:2/0 = 0
+18:2/0 = 0
+19:2/0 = 0
+20:2/0 = 0
+21:2/0 = 0
+22:2/0 = 0
+23:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+8:3/0 = 0
+9:3/0 = 0
+10:3/0 = 0
+11:3/0 = 0
+12:3/0 = 0
+13:3/0 = 0
+14:3/0 = 0
+15:3/0 = 0
+16:3/0 = 0
+17:3/0 = 0
+18:3/0 = 0
+19:3/0 = 0
+20:3/0 = 0
+21:3/0 = 0
+22:3/0 = 0
+23:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+8:4/0 = 0
+9:4/0 = 0
+10:4/0 = 0
+11:4/0 = 0
+12:4/0 = 0
+13:4/0 = 0
+14:4/0 = 0
+15:4/0 = 0
+16:4/0 = 0
+17:4/0 = 0
+18:4/0 = 0
+19:4/0 = 0
+20:4/0 = 0
+21:4/0 = 0
+22:4/0 = 0
+23:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+8:5/0 = 0
+9:5/0 = 0
+10:5/0 = 0
+11:5/0 = 0
+12:5/0 = 0
+13:5/0 = 0
+14:5/0 = 0
+15:5/0 = 0
+16:5/0 = 0
+17:5/0 = 0
+18:5/0 = 0
+19:5/0 = 0
+20:5/0 = 0
+21:5/0 = 0
+22:5/0 = 0
+23:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
+3:6/0 = 0
+4:6/0 = 0
+5:6/0 = 0
+6:6/0 = 0
+7:6/0 = 0
+8:6/0 = 0
+9:6/0 = 0
+10:6/0 = 0
+11:6/0 = 0
+12:6/0 = 0
+13:6/0 = 0
+14:6/0 = 0
+15:6/0 = 0
+16:6/0 = 0
+17:6/0 = 0
+18:6/0 = 0
+19:6/0 = 0
+20:6/0 = 0
+21:6/0 = 0
+22:6/0 = 0
+23:6/0 = 0
+0:7/0 = 0
+1:7/0 = 0
+2:7/0 = 0
+3:7/0 = 0
+4:7/0 = 0
+5:7/0 = 0
+6:7/0 = 0
+7:7/0 = 0
+8:7/0 = 0
+9:7/0 = 0
+10:7/0 = 0
+11:7/0 = 0
+12:7/0 = 0
+13:7/0 = 0
+14:7/0 = 0
+15:7/0 = 0
+16:7/0 = 0
+17:7/0 = 0
+18:7/0 = 0
+19:7/0 = 0
+20:7/0 = 0
+21:7/0 = 0
+22:7/0 = 0
+23:7/0 = 0
+0:8/0 = 0
+1:8/0 = 0
+2:8/0 = 0
+3:8/0 = 0
+4:8/0 = 0
+5:8/0 = 0
+6:8/0 = 0
+7:8/0 = 0
+8:8/0 = 0
+9:8/0 = 0
+10:8/0 = 0
+11:8/0 = 0
+12:8/0 = 0
+13:8/0 = 0
+14:8/0 = 0
+15:8/0 = 0
+16:8/0 = 0
+17:8/0 = 0
+18:8/0 = 0
+19:8/0 = 0
+20:8/0 = 0
+21:8/0 = 0
+22:8/0 = 0
+23:8/0 = 0
+0:9/0 = 0
+1:9/0 = 0
+2:9/0 = 0
+3:9/0 = 0
+4:9/0 = 0
+5:9/0 = 0
+6:9/0 = 0
+7:9/0 = 0
+8:9/0 = 0
+9:9/0 = 0
+10:9/0 = 0
+11:9/0 = 0
+12:9/0 = 0
+13:9/0 = 0
+14:9/0 = 0
+15:9/0 = 0
+16:9/0 = 0
+17:9/0 = 0
+18:9/0 = 0
+19:9/0 = 0
+20:9/0 = 0
+21:9/0 = 0
+22:9/0 = 0
+23:9/0 = 0
+0:10/0 = 0
+1:10/0 = 0
+2:10/0 = 0
+3:10/0 = 0
+4:10/0 = 0
+5:10/0 = 0
+6:10/0 = 0
+7:10/0 = 0
+8:10/0 = 0
+9:10/0 = 0
+10:10/0 = 0
+11:10/0 = 0
+12:10/0 = 0
+13:10/0 = 0
+14:10/0 = 0
+15:10/0 = 0
+16:10/0 = 0
+17:10/0 = 0
+18:10/0 = 0
+19:10/0 = 0
+20:10/0 = 0
+21:10/0 = 0
+22:10/0 = 0
+23:10/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_y8usa"]
+sources/0 = SubResource("TileSetAtlasSource_1pjos")
+
+[sub_resource type="Gradient" id="Gradient_3nf3e"]
+offsets = PackedFloat32Array(0, 0.113379, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_e5t7u"]
+gradient = SubResource("Gradient_3nf3e")
+
+[sub_resource type="Curve" id="Curve_pdoko"]
+min_value = -200.0
+max_value = 200.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 72.2467), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ostfp"]
+curve = SubResource("Curve_pdoko")
+
+[sub_resource type="Curve" id="Curve_lxwbk"]
+_data = [Vector2(0.0360721, 0.15859), 0.0, 0.0, 0, 0, Vector2(0.49499, 0.548458), 0.0, 0.0, 0, 0, Vector2(0.96994, 0.23348), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_g1xg1"]
+curve = SubResource("Curve_lxwbk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6ncuw"]
+particle_flag_disable_z = true
+gravity = Vector3(0, -50, 0)
+linear_accel_max = 11.59
+linear_accel_curve = SubResource("CurveTexture_ostfp")
+radial_accel_min = -63.04
+radial_accel_max = 52.17
+scale_curve = SubResource("CurveTexture_g1xg1")
+color_ramp = SubResource("GradientTexture1D_e5t7u")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oxhnk"]
+atlas = ExtResource("3_67muf")
+region = Rect2(64, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_boptj"]
+atlas = ExtResource("1_53mlo")
+region = Rect2(368, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66p7d"]
+atlas = ExtResource("1_53mlo")
+region = Rect2(208, 112, 16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xhb1n"]
+radius = 74.713
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qti6d"]
+bg_color = Color(0, 0, 0, 0.396078)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltspa"]
+atlas = ExtResource("3_67muf")
+region = Rect2(336, 160, 16, 16)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("agent")]
+script = ExtResource("1_nxi4c")
+agent = NodePath("Avatar")
+
+[node name="TileMap" type="TileMap" parent="World"]
+position = Vector2(600, 600)
+scale = Vector2(8, 8)
+tile_set = SubResource("TileSet_y8usa")
+format = 2
+layer_0/name = "Base"
+layer_0/tile_data = PackedInt32Array(196610, 0, 0, 196609, 0, 0, 196608, 0, 0, 196607, 0, 3, 196606, 0, 0, 131069, 65536, 0, 65532, 0, 0, -4, 65536, 0, -3, 65536, 0, -2, 0, 0, -1, 0, 0, -65536, 0, 0, -65535, 0, 0, -65534, 0, 0, 2, 0, 0, 3, 0, 0, 65539, 65536, 0, 131075, 0, 0, 131076, 65536, 0, 196612, 0, 0, 262148, 0, 0, 327684, 0, 0, 327683, 0, 0, 327682, 0, 0, 262145, 0, 0, 131070, 0, 0, 65534, 0, 0, 65535, 0, 0, 0, 0, 0, 65537, 131072, 1, 65538, 65536, 0, 131074, 0, 0, 131073, 131072, 3, 196611, 0, 0, 262147, 0, 0, 327681, 0, 0, 262144, 0, 0, 65536, 65536, 1, 262142, 0, 0, 262143, 0, 0, 262146, 0, 0, 131072, 65536, 3, 65533, 0, 0, -5, 0, 0, -65541, 0, 0, 1, 0, 0, 196605, 0, 0, 262141, 0, 0, 327677, 0, 0, 327678, 0, 0, 131071, 0, 1, 327679, 0, 0, -65533, 0, 0, 131068, 0, 0, -65540, 65536, 0, -131076, 0, 0, 65531, 0, 0, -65538, 0, 0, -131074, 0, 0, -131075, 0, 0, -65539, 0, 0, -131073, 65536, 0, -65537, 0, 0, -131072, 0, 0, -196608, 0, 0, -196607, 0, 0, -131071, 0, 0, -131070, 0, 0, -196606, 0, 0, -196605, 0, 0, -131069, 0, 0, -131068, 0, 0, -196604, 0, 0, -65532, 0, 0, 4, 0, 0, 65540, 0, 0, 196604, 65536, 0, 196603, 65536, 0, 131067, 0, 0, 262139, 65536, 0, 327675, 0, 0, 393211, 0, 0, 393212, 0, 0, 327676, 0, 0, 262140, 65536, 0, 393213, 0, 0, 393214, 0, 0, 393215, 0, 0, 327680, 0, 0, -196612, 0, 0, -131077, 0, 0, -196613, 0, 0, -262149, 0, 0, -262147, 0, 0, -262146, 0, 0, -262145, 0, 0, -327680, 0, 0, -327679, 0, 0, -327678, 0, 0, -327677, 0, 0, -327676, 0, 0, -327675, 0, 0, -262140, 0, 0, -262141, 0, 0, -262142, 0, 0, -262143, 0, 0, -262144, 0, 0, -196609, 0, 0, -196610, 65536, 0, -262139, 0, 0, -196603, 0, 0, -131067, 0, 0, -65531, 0, 0, 5, 0, 0, 65541, 0, 0, 131077, 0, 0, 196613, 0, 0, 262149, 0, 0, 327685, 0, 0, -262148, 0, 0, -196611, 0, 0)
+layer_1/name = "Trees"
+layer_1/tile_data = PackedInt32Array(-262149, 458752, 1, -196613, 458752, 1, -327675, 458752, 1, -262139, 458752, 1, 393212, 458752, 1, 327675, 458752, 1, 262139, 458752, 1, 393211, 458752, 1, 327685, 458752, 1, 262149, 458752, 1, 327684, 458752, 1, 196613, 458752, 1, 196603, 458752, 1, 131067, 458752, 1, -262146, 458752, 1, -262147, 458752, 1, -262148, 458752, 1, 131068, 524288, 1, 196604, 524288, 1, 393214, 524288, 1, -131077, 458752, 2, -196612, 524288, 2, 131077, 458752, 0, 196612, 393216, 1, 327683, 393216, 1, 262148, 393216, 0, 131076, 262144, 1, 65540, 262144, 0, -5, 327680, 0, 5, 327680, 1, 196611, 327680, 1, -131076, 327680, 1, 65531, 458752, 0, 327676, 458752, 1, 262140, 524288, 0, 327677, 524288, 0, 393213, 458752, 1, -262141, 327680, 0, -131068, 327680, 0, -196603, 458752, 2, -196611, 458752, 2, -131073, 458752, 2, -196609, 458752, 1, -196610, 393216, 2, -327676, 393216, 2, -262140, 393216, 1, -262144, 524288, 1, -262145, 524288, 0, -327679, 458752, 1, -327680, 393216, 1, -262143, 458752, 2, -327678, 458752, 1, -327677, 524288, 1, -262142, 458752, 2, 393215, 524288, 6, 327680, 589824, 3, 327681, 589824, 3, 327682, 655360, 6, -196606, 655360, 7, -196607, 655360, 7, -131069, 655360, 7)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="World"]
+position = Vector2(606, 640)
+navigation_polygon = ExtResource("2_qvikc")
+use_edge_connections = false
+
+[node name="Fire" type="Node2D" parent="World" groups=["move_target"]]
+position = Vector2(644, 921)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="World/Fire"]
+amount = 5
+process_material = SubResource("ParticleProcessMaterial_6ncuw")
+texture = ExtResource("2_jee0f")
+lifetime = 3.0
+randomness = 0.42
+
+[node name="MoveTargetable" parent="World/Fire" instance=ExtResource("3_xo8uv")]
+
+[node name="WorldObject" parent="World/Fire" instance=ExtResource("4_lwsc3")]
+worldName = "fire"
+
+[node name="Tree" type="Node2D" parent="World" groups=["move_target", "use_target"]]
+position = Vector2(350, 600)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="World/Tree"]
+position = Vector2(0, -13.065)
+scale = Vector2(8, 8)
+texture = SubResource("AtlasTexture_oxhnk")
+
+[node name="WorldObject" parent="World/Tree" instance=ExtResource("4_lwsc3")]
+worldName = "tree"
+
+[node name="Axe" type="Node2D" parent="World" groups=["move_target", "pickupable", "usable"]]
+position = Vector2(800, 600)
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="World/Axe"]
+scale = Vector2(8, 8)
+texture = SubResource("AtlasTexture_boptj")
+
+[node name="WorldObject" parent="World/Axe" instance=ExtResource("4_lwsc3")]
+worldName = "axe"
+
+[node name="Avatar" type="CharacterBody2D" parent="World"]
+position = Vector2(613, 441)
+motion_mode = 1
+script = ExtResource("6_55abl")
+speed = 300
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="World/Avatar"]
+scale = Vector2(8, 8)
+texture = SubResource("AtlasTexture_66p7d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Avatar"]
+shape = SubResource("CircleShape2D_xhb1n")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="World/Avatar"]
+debug_enabled = true
+
+[node name="ClickLayer" type="ColorRect" parent="."]
+offset_right = 1271.0
+offset_bottom = 1378.0
+color = Color(1, 1, 1, 0.101961)
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_top = 1021.0
+offset_right = 1287.0
+offset_bottom = 1497.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="Log" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_qti6d")
+scroll_following = true
+script = ExtResource("6_cxb2q")
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 66
+clear_button_enabled = true
+script = ExtResource("6_2ate2")
+
+[node name="CommandProcessor" type="Node" parent="." node_paths=PackedStringArray("target_avatar", "worldNode")]
+script = ExtResource("9_5miip")
+target_avatar = NodePath("../World/Avatar")
+worldNode = NodePath("../World")
+
+[node name="Tracker" type="Node2D" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("12_eoniw")
+target = NodePath("../World/Avatar")
+
+[node name="Transformer" type="Node2D" parent="Tracker"]
+
+[node name="Arrrow" type="Sprite2D" parent="Tracker/Transformer"]
+self_modulate = Color(1, 1, 1, 0.427451)
+position = Vector2(0, -100)
+scale = Vector2(4, 4)
+texture = SubResource("AtlasTexture_ltspa")
+
+[connection signal="gui_input" from="ClickLayer" to="World" method="_on_click_layer_gui_input"]
+[connection signal="on_new_command" from="MarginContainer/VBoxContainer/LineEdit" to="MarginContainer/VBoxContainer/Log" method="_on_new_ui_command"]
+[connection signal="on_new_command" from="MarginContainer/VBoxContainer/LineEdit" to="CommandProcessor" method="_on_new_command"]
