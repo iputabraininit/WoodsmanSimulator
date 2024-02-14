@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://5oq4tbfra52m"]
+
+[ext_resource type="Texture2D" uid="uid://dohdckaifufau" path="res://assets/texture_atlas.tres" id="1_jsv1m"]
+[ext_resource type="Script" path="res://objects/WoodBehaviour.gd" id="1_u1jv6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_or0qy"]
+atlas = ExtResource("1_jsv1m")
+region = Rect2(160.029, 130.073, 16.5926, 12.5103)
+
+[node name="Wood" type="Node2D" groups=["pickupable"]]
+script = ExtResource("1_u1jv6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(8, 8)
+texture = SubResource("AtlasTexture_or0qy")

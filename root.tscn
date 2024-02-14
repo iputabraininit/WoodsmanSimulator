@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ds61na4yyd8mx"]
+[gd_scene load_steps=39 format=3 uid="uid://ds61na4yyd8mx"]
 
 [ext_resource type="Texture2D" uid="uid://bxf3qyqacdbrs" path="res://assets/town_and_dungeon_tilemap.png" id="1_53mlo"]
 [ext_resource type="Script" path="res://ClickableWorldBehaviour.gd" id="1_nxi4c"]
@@ -6,11 +6,15 @@
 [ext_resource type="NavigationPolygon" uid="uid://h2gkms80gxkf" path="res://assets/new_navigation_polygon.tres" id="2_qvikc"]
 [ext_resource type="Texture2D" uid="uid://dohdckaifufau" path="res://assets/texture_atlas.tres" id="3_67muf"]
 [ext_resource type="PackedScene" uid="uid://3eck37jacdw1" path="res://move_targetable.tscn" id="3_xo8uv"]
-[ext_resource type="PackedScene" uid="uid://66kyqxlyft4u" path="res://world_object.tscn" id="4_lwsc3"]
 [ext_resource type="Script" path="res://CommandInputBehaviour.gd" id="6_2ate2"]
 [ext_resource type="Script" path="res://AvatarBehaviour.gd" id="6_55abl"]
 [ext_resource type="Script" path="res://CommandHistoryLogger.gd" id="6_cxb2q"]
+[ext_resource type="Script" path="res://TreeBehaviour.gd" id="6_tjrfq"]
+[ext_resource type="PackedScene" uid="uid://5oq4tbfra52m" path="res://objects/wood.tscn" id="7_601l6"]
+[ext_resource type="Script" path="res://FireBehaviour.gd" id="7_qawdy"]
+[ext_resource type="Script" path="res://AxeBehaviour.gd" id="7_wykxk"]
 [ext_resource type="Script" path="res://CommandProcessorBehaviour.gd" id="9_5miip"]
+[ext_resource type="Texture2D" uid="uid://osq6olvdcsuj" path="res://assets/particles/flame_01.png" id="9_napah"]
 [ext_resource type="Script" path="res://TrackerBehaviour.gd" id="12_eoniw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1pjos"]
@@ -283,6 +287,14 @@ texture = ExtResource("1_53mlo")
 [sub_resource type="TileSet" id="TileSet_y8usa"]
 sources/0 = SubResource("TileSetAtlasSource_1pjos")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_oxhnk"]
+atlas = ExtResource("3_67muf")
+region = Rect2(64, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ns1p0"]
+atlas = ExtResource("3_67muf")
+region = Rect2(287.792, 78.5914, 16.055, 18.6184)
+
 [sub_resource type="Gradient" id="Gradient_3nf3e"]
 offsets = PackedFloat32Array(0, 0.113379, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
@@ -316,9 +328,38 @@ radial_accel_max = 52.17
 scale_curve = SubResource("CurveTexture_g1xg1")
 color_ramp = SubResource("GradientTexture1D_e5t7u")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_oxhnk"]
-atlas = ExtResource("3_67muf")
-region = Rect2(64, 0, 16, 32)
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_arnhk"]
+blend_mode = 4
+
+[sub_resource type="Gradient" id="Gradient_d0s3e"]
+offsets = PackedFloat32Array(0, 0.299505, 0.606436, 0.982673)
+colors = PackedColorArray(0.909804, 0.909804, 0.219608, 0.882353, 0.894118, 0.894118, 0.592157, 1, 1, 0.219608, 0.027451, 1, 1, 0.219608, 0.027451, 0.490196)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vy1ho"]
+gradient = SubResource("Gradient_d0s3e")
+
+[sub_resource type="Curve" id="Curve_8pobq"]
+_data = [Vector2(0, 0.54269), 0.0, 0.0, 0, 0, Vector2(0.383117, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.654635), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_xtnkn"]
+curve = SubResource("Curve_8pobq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yyr2w"]
+particle_flag_disable_z = true
+angular_velocity_min = -72.56
+angular_velocity_max = 66.98
+gravity = Vector3(0, -200, 0)
+linear_accel_max = 15.5
+radial_accel_min = -8.53
+radial_accel_max = 17.83
+scale_min = 0.1
+scale_max = 0.4
+scale_curve = SubResource("CurveTexture_xtnkn")
+color_ramp = SubResource("GradientTexture1D_vy1ho")
+hue_variation_min = 0.01
+hue_variation_max = 0.03
+turbulence_enabled = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_boptj"]
 atlas = ExtResource("1_53mlo")
@@ -359,44 +400,55 @@ position = Vector2(606, 640)
 navigation_polygon = ExtResource("2_qvikc")
 use_edge_connections = false
 
-[node name="Fire" type="Node2D" parent="World" groups=["move_target"]]
-position = Vector2(644, 921)
+[node name="WorldItems" type="Node2D" parent="World"]
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="World/Fire"]
-amount = 5
+[node name="Tree" type="Node2D" parent="World/WorldItems" node_paths=PackedStringArray("world_items_node") groups=["move_target", "use_target"]]
+position = Vector2(350, 600)
+script = ExtResource("6_tjrfq")
+wood_scene = ExtResource("7_601l6")
+world_items_node = NodePath("..")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="World/WorldItems/Tree"]
+position = Vector2(0, -13.065)
+scale = Vector2(8, 8)
+texture = SubResource("AtlasTexture_oxhnk")
+
+[node name="Fire" type="Node2D" parent="World/WorldItems" groups=["move_target"]]
+position = Vector2(644, 921)
+script = ExtResource("7_qawdy")
+
+[node name="Sprite2D" type="Sprite2D" parent="World/WorldItems/Fire"]
+position = Vector2(1, 0)
+scale = Vector2(9.23, 8)
+texture = SubResource("AtlasTexture_ns1p0")
+
+[node name="SmokeParticles" type="GPUParticles2D" parent="World/WorldItems/Fire"]
+amount_ratio = 0.3
 process_material = SubResource("ParticleProcessMaterial_6ncuw")
 texture = ExtResource("2_jee0f")
 lifetime = 3.0
 randomness = 0.42
 
-[node name="MoveTargetable" parent="World/Fire" instance=ExtResource("3_xo8uv")]
+[node name="FireParticles" type="GPUParticles2D" parent="World/WorldItems/Fire"]
+material = SubResource("CanvasItemMaterial_arnhk")
+emitting = false
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_yyr2w")
+texture = ExtResource("9_napah")
+lifetime = 1.5
 
-[node name="WorldObject" parent="World/Fire" instance=ExtResource("4_lwsc3")]
-worldName = "fire"
+[node name="MoveTargetable" parent="World/WorldItems/Fire" instance=ExtResource("3_xo8uv")]
 
-[node name="Tree" type="Node2D" parent="World" groups=["move_target", "use_target"]]
-position = Vector2(350, 600)
-metadata/_edit_group_ = true
-
-[node name="Sprite2D" type="Sprite2D" parent="World/Tree"]
-position = Vector2(0, -13.065)
-scale = Vector2(8, 8)
-texture = SubResource("AtlasTexture_oxhnk")
-
-[node name="WorldObject" parent="World/Tree" instance=ExtResource("4_lwsc3")]
-worldName = "tree"
-
-[node name="Axe" type="Node2D" parent="World" groups=["move_target", "pickupable", "usable"]]
+[node name="Axe" type="Node2D" parent="World/WorldItems" groups=["move_target", "pickupable", "usable"]]
 position = Vector2(800, 600)
+script = ExtResource("7_wykxk")
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="World/Axe"]
+[node name="Sprite2D" type="Sprite2D" parent="World/WorldItems/Axe"]
 scale = Vector2(8, 8)
 texture = SubResource("AtlasTexture_boptj")
-
-[node name="WorldObject" parent="World/Axe" instance=ExtResource("4_lwsc3")]
-worldName = "axe"
 
 [node name="Avatar" type="CharacterBody2D" parent="World"]
 position = Vector2(613, 441)
@@ -450,10 +502,10 @@ theme_override_font_sizes/font_size = 66
 clear_button_enabled = true
 script = ExtResource("6_2ate2")
 
-[node name="CommandProcessor" type="Node" parent="." node_paths=PackedStringArray("target_avatar", "worldNode")]
+[node name="CommandProcessor" type="Node" parent="." node_paths=PackedStringArray("target_avatar", "world_items_node")]
 script = ExtResource("9_5miip")
 target_avatar = NodePath("../World/Avatar")
-worldNode = NodePath("../World")
+world_items_node = NodePath("../World/WorldItems")
 
 [node name="Tracker" type="Node2D" parent="." node_paths=PackedStringArray("target")]
 script = ExtResource("12_eoniw")

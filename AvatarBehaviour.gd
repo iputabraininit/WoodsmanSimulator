@@ -45,7 +45,7 @@ func moveto(destination:Vector2):
 	_navigation_agent.target_position = destination
 	_moving_to_destination = true
 	
-func close_enough_for_pickup(itemToPickUp: Node2D) -> bool:
+func close_enough_for_interaction(itemToPickUp: Node2D) -> bool:
 	var distance = global_position.distance_to(itemToPickUp.global_position) 	
 	print(distance)
 	return distance <= PICKUP_DISTANCE
@@ -69,5 +69,14 @@ func calculateDropPoint():
 	var arrowRotation = Vector2(0, PICKUP_DISTANCE).angle_to(_movementVector)
 	return Vector2(0, PICKUP_DISTANCE).rotated(arrowRotation) + global_position
 
+func use_held_item(heldItemName:String, targetObject:Node2D) -> String:
+	var itemToUse = get_node(heldItemName)
+
+	if (!itemToUse.has_method("use")):
+		return ("item " + heldItemName + "does not have a use method")
+
+	itemToUse.use(targetObject) # using some duck-typing here
+
+	return "used"
 	
 
