@@ -7,7 +7,7 @@
 atlas = ExtResource("1_jsv1m")
 region = Rect2(160.029, 130.073, 16.5926, 12.5103)
 
-[node name="Wood" type="Node2D" groups=["pickupable"]]
+[node name="log" type="Node2D" groups=["pickupable"]]
 script = ExtResource("1_u1jv6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

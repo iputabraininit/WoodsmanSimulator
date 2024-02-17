@@ -50,14 +50,14 @@ func moveto(destination:Vector2):
 	
 func close_enough_for_interaction(itemToPickUp: Node2D) -> bool:
 	var distance = global_position.distance_to(itemToPickUp.global_position) 	
-	print(distance)
 	return distance <= PICKUP_DISTANCE
 		
 	
 func pickup(toPickUp:Node2D):
 	add_child(toPickUp)
 	toPickUp.position = Vector2(0, 0)
-	_pickedUpObjects.push_back(toPickUp)
+	if !_pickedUpObjects.has(toPickUp):
+		_pickedUpObjects.push_back(toPickUp)
 	
 func is_holding_object(nameToCheck:String) -> bool:
 	var foundChildNode: Node = get_node(nameToCheck)
@@ -69,8 +69,8 @@ func drop(toDrop:String) -> Node2D:
 	return childToDrop
 	
 func calculateDropPoint():
-	var arrowRotation = Vector2(0, PICKUP_DISTANCE).angle_to(_movementVector)
-	return Vector2(0, PICKUP_DISTANCE).rotated(arrowRotation) + global_position
+	var arrowRotation = Vector2(0, PICKUP_DISTANCE - 10).angle_to(_movementVector)
+	return Vector2(0, PICKUP_DISTANCE - 10).rotated(arrowRotation) + global_position
 
 func use_held_item(heldItemName:String, targetObject:Node2D) -> String:
 	var itemToUse = get_node(heldItemName)
@@ -80,7 +80,7 @@ func use_held_item(heldItemName:String, targetObject:Node2D) -> String:
 
 	itemToUse.use(targetObject) # using some duck-typing here
 
-	return "used"
+	return itemToUse.name + " used on " + targetObject.name
 
 func get_holding_text() -> String:
 	if (_pickedUpObjects.is_empty()):

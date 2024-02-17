@@ -1,17 +1,21 @@
 extends Node
 
-@export var target_avatar:Avatar
-@export var world_items_node: Node2D
+var target_avatar:Avatar
+var world_items_node: Node2D
 
+@export var root_node: Node2D
 @export var world_scene: PackedScene
+@export var _unpacked_world: World
 
-var _unpacked_world: Node2D
+@export var epoch_anim_player: AnimationPlayer
+@export var epoch_text_label: RichTextLabel
 
 # Sent out when this command processor has finished executing a given command
 signal on_command_response(response: String)
 
 func _ready():
-	pass
+	target_avatar = _unpacked_world.agent
+	world_items_node = _unpacked_world.world_items_node
 
 func _process(delta):
 	pass
@@ -62,7 +66,7 @@ func pickup(itemName: String) -> String:
 	target_avatar.pickup(foundNode)
 	return itemName + " picked up"
 	
-func drop(itemName: String):
+func drop(itemName: String) -> String:
 	if !target_avatar.is_holding_object(itemName):
 		return itemName + " can't be dropped as it's not being held."
 		
@@ -86,9 +90,10 @@ func drop(itemName: String):
 	# otherwise, add it to the world
 	if can_drop_on_on_world_item:
 		target_item.dropped_on(droppedNode)
-		print("Dropped " + itemName + " on something in the world")
+		return "Dropped " + droppedNode.name + " on " + target_item.name
 	else:
 		world_items_node.add_child(droppedNode)
+		return "Dropped " + droppedNode.name
 
 
 
@@ -105,12 +110,21 @@ func use(heldItemName: String, targetWorldItemName: String) -> String:
 
 	return target_avatar.use_held_item(heldItemName, foundWorldNode)
 
-func reset(epoch_title: String):
-	pass
-	# clear the current scene
-	# unpack the world,
-	# get the avatar and root out of the unpacked scene
-	# send out a signal the iteration got reset for display
+func reset(epoch_title: String) -> String:
+	_unpacked_world.queue_free()
+	_unpacked_world = world_scene.instantiate()
+	
+	root_node.add_child(_unpacked_world)
+	root_node.move_child(_unpacked_world, 0)
+	
+	target_avatar = _unpacked_world.agent
+	world_items_node = _unpacked_world.world_items_node
+	
+	epoch_text_label.text = "[center]" + epoch_title + "[/center]"
+	epoch_anim_player.play("epoch_announcement")
+	
+	return "reset world status for epoch " + epoch_title
+	
 
 func status() -> String:
 	var status_text: String      = "You are in a wooded clearing. There is "

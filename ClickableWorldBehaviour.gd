@@ -1,17 +1,13 @@
 extends Node2D
 
+class_name World
+
 @export var agent:Avatar
-# Called when the node enters the scene tree for the first time.
+@export var world_items_node: Node2D
+
+
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
 	pass
 
-	
-func _on_click_layer_gui_input(event):
-	if (event is InputEventMouseButton && event.pressed):
-		print("click, click ", event.position)
-		agent.moveto(event.position)
+func _process(delta):
+	pass

@@ -7,11 +7,15 @@ var _previousTargetPosition = Vector2(0, 0)
 var _movementVector = Vector2(0, 1)
 
 func _ready():
+	if (target == null):
+		return
 	_previousTargetPosition = target.global_position
-	pass # Replace with function body.
 
 
 func _process(delta):
+	if (target == null):
+		return
+		
 	if (_previousTargetPosition == target.global_position):
 		return
 
