@@ -5,11 +5,13 @@ class_name Avatar
 @export var speed: int = 20
 
 var _moving_to_destination: bool = false
-var _pickedUpObjects:Array       = []
+var _pickedUpObjects:Array[Node] = []
 var _previousTargetPosition = Vector2(0, 0)
 var _movementVector = Vector2(0, 1)
 
 var PICKUP_DISTANCE = 100
+
+signal arrived_at_destination
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,6 +34,8 @@ func _physics_process(delta) -> void:
 	if _navigation_agent.is_target_reached():
 		print("Target reached")
 		_moving_to_destination = false
+		arrived_at_destination.emit()
+		print("Emitted arriving")
 		return
 	
 	var move_direction: Vector2 = global_position.direction_to(_navigation_agent.get_next_path_position()).normalized()
@@ -41,7 +45,6 @@ func _physics_process(delta) -> void:
 
 
 func moveto(destination:Vector2):
-	print("Moving to ", destination)
 	_navigation_agent.target_position = destination
 	_moving_to_destination = true
 	
@@ -78,5 +81,10 @@ func use_held_item(heldItemName:String, targetObject:Node2D) -> String:
 	itemToUse.use(targetObject) # using some duck-typing here
 
 	return "used"
-	
+
+func get_holding_text() -> String:
+	if (_pickedUpObjects.is_empty()):
+		return "nothing"
+	else:
+		return Utilities.list_of_world_items(_pickedUpObjects)
 

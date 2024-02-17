@@ -3,19 +3,23 @@ extends Node
 @export var target_avatar:Avatar
 @export var world_items_node: Node2D
 
-# Called when the node enters the scene tree for the first time.
+@export var world_scene: PackedScene
+
+var _unpacked_world: Node2D
+
+# Sent out when this command processor has finished executing a given command
+signal on_command_response(response: String)
+
 func _ready():
-	
-	pass # Replace with function body.
+	pass
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
-
+# A new command could have come in from the UI, or Websocket
+# This script should be agnostic on where the command has come from.
 func _on_new_command(command, arguments):
-	print("Command processor recieved ", command, " ", arguments)
+#	print("Command processor recieved ", command, " ", arguments)
 	var expression = Expression.new()
 	
 	for i in arguments.size():
@@ -24,21 +28,22 @@ func _on_new_command(command, arguments):
 	var joinedArguments = ", ".join(arguments)
 	var fullCommandToExecute = command + "(" + joinedArguments + ")"
 	expression.parse(fullCommandToExecute)
-	
-	print ("executing : ", fullCommandToExecute)
-	var result = expression.execute([], self)
-	print(result)
+
+	var result = await expression.execute([], self)
+
+	on_command_response.emit(result)
 	
 func moveto(locationName: String) -> String:
-	print("Move command, moving to " + locationName)
+	print("Moving to ", locationName)
 	# let's find the location, and then ask the avatar to move to it
 	var foundNode = world_items_node.get_node(locationName)
 	if foundNode == null:
 		return "No destination found with name " + locationName
 	
 	target_avatar.moveto(foundNode.position)
-	
-	return "Moving"
+	await target_avatar.arrived_at_destination
+
+	return "Arrived at " + locationName
 
 func pickup(itemName: String) -> String:
 	print("Picking up ", itemName)
@@ -55,7 +60,7 @@ func pickup(itemName: String) -> String:
 		
 	world_items_node.remove_child(foundNode)	
 	target_avatar.pickup(foundNode)
-	return itemName + "picked up"
+	return itemName + " picked up"
 	
 func drop(itemName: String):
 	if !target_avatar.is_holding_object(itemName):
@@ -100,6 +105,21 @@ func use(heldItemName: String, targetWorldItemName: String) -> String:
 
 	return target_avatar.use_held_item(heldItemName, foundWorldNode)
 
+func reset(epoch_title: String):
+	pass
+	# clear the current scene
+	# unpack the world,
+	# get the avatar and root out of the unpacked scene
+	# send out a signal the iteration got reset for display
 
+func status() -> String:
+	var status_text: String      = "You are in a wooded clearing. There is "
+	var world_items: Array[Node] = world_items_node.get_children()
+
+	status_text = status_text + Utilities.list_of_world_items(world_items)
+
+	status_text = status_text + " here. You are holding " + target_avatar.get_holding_text() + "."
+
+	return status_text
 
 

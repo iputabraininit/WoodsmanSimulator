@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://ds61na4yyd8mx"]
+[gd_scene load_steps=40 format=3 uid="uid://ds61na4yyd8mx"]
 
 [ext_resource type="Texture2D" uid="uid://bxf3qyqacdbrs" path="res://assets/town_and_dungeon_tilemap.png" id="1_53mlo"]
 [ext_resource type="Script" path="res://ClickableWorldBehaviour.gd" id="1_nxi4c"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://CommandProcessorBehaviour.gd" id="9_5miip"]
 [ext_resource type="Texture2D" uid="uid://osq6olvdcsuj" path="res://assets/particles/flame_01.png" id="9_napah"]
 [ext_resource type="Script" path="res://TrackerBehaviour.gd" id="12_eoniw"]
+[ext_resource type="Script" path="res://WebSocketCommandRecieverBehaviour.gd" id="16_y8sjq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1pjos"]
 texture = ExtResource("1_53mlo")
@@ -473,7 +474,7 @@ offset_bottom = 1378.0
 color = Color(1, 1, 1, 0.101961)
 metadata/_edit_lock_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="UI" type="MarginContainer" parent="."]
 offset_top = 1021.0
 offset_right = 1287.0
 offset_bottom = 1497.0
@@ -482,30 +483,34 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_constants/separation = 0
 alignment = 2
 
-[node name="Log" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="Log" type="RichTextLabel" parent="UI/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_qti6d")
+bbcode_enabled = true
 scroll_following = true
 script = ExtResource("6_cxb2q")
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="UI/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 66
 clear_button_enabled = true
 script = ExtResource("6_2ate2")
 
-[node name="CommandProcessor" type="Node" parent="." node_paths=PackedStringArray("target_avatar", "world_items_node")]
+[node name="CoreCommandProcessor" type="Node" parent="." node_paths=PackedStringArray("target_avatar", "world_items_node")]
 script = ExtResource("9_5miip")
 target_avatar = NodePath("../World/Avatar")
 world_items_node = NodePath("../World/WorldItems")
+
+[node name="WebSocketCommandReciever" type="Node" parent="."]
+script = ExtResource("16_y8sjq")
 
 [node name="Tracker" type="Node2D" parent="." node_paths=PackedStringArray("target")]
 script = ExtResource("12_eoniw")
@@ -520,5 +525,9 @@ scale = Vector2(4, 4)
 texture = SubResource("AtlasTexture_ltspa")
 
 [connection signal="gui_input" from="ClickLayer" to="World" method="_on_click_layer_gui_input"]
-[connection signal="on_new_command" from="MarginContainer/VBoxContainer/LineEdit" to="MarginContainer/VBoxContainer/Log" method="_on_new_ui_command"]
-[connection signal="on_new_command" from="MarginContainer/VBoxContainer/LineEdit" to="CommandProcessor" method="_on_new_command"]
+[connection signal="on_new_command" from="UI/VBoxContainer/LineEdit" to="UI/VBoxContainer/Log" method="_on_new_ui_command"]
+[connection signal="on_new_command" from="UI/VBoxContainer/LineEdit" to="CoreCommandProcessor" method="_on_new_command"]
+[connection signal="on_command_response" from="CoreCommandProcessor" to="UI/VBoxContainer/Log" method="on_command_response"]
+[connection signal="on_command_response" from="CoreCommandProcessor" to="WebSocketCommandReciever" method="on_command_response"]
+[connection signal="on_new_command_recieved" from="WebSocketCommandReciever" to="UI/VBoxContainer/Log" method="_on_new_ui_command"]
+[connection signal="on_new_command_recieved" from="WebSocketCommandReciever" to="CoreCommandProcessor" method="_on_new_command"]

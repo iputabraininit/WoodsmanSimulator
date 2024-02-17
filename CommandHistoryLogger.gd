@@ -11,5 +11,8 @@ func _process(delta):
 	pass
 
 
-func _on_new_ui_command(command, arguments:Array):
-	text = text + "\n" + command + " " + arguments[0]
+func _on_new_ui_command(command, arguments:Array[String]):
+	append_text("\n%s %s" % [command, " ".join(PackedStringArray(arguments)) ])
+
+func on_command_response(response:String):
+	append_text("\n[color=green]%s[/color]" % [response])

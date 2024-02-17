@@ -12,3 +12,6 @@ func _process(delta):
 
 func get_flammability() -> int:
 	return 100
+
+func get_status_description() -> String:
+	return "a log"

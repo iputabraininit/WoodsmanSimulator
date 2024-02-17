@@ -10,6 +10,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+func get_status_description() -> String:
+	return "a tree"
+
 func damage(amount:int):
 	_health -= amount
 	if (_health <= 0):

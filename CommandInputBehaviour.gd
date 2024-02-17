@@ -12,7 +12,6 @@ func _process(delta):
 	pass
 
 func promptTextChanged(newText):
-	print("Input command '", newText, "'")
 	var splitCommands = newText.split(" ",  false)
 	
 	clear()

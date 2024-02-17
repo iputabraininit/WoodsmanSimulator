@@ -9,6 +9,8 @@ func use(target:Node) -> String:
 	if !target.has_method("damage"):
 		return "target is not damageable"
 
-	# TODO pass in what direction the damage came from
 	target.damage(DAMAGE)
 	return "damaged"
+
+func get_status_description() -> String:
+	return "an axe"
