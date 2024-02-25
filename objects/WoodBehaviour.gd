@@ -15,3 +15,11 @@ func get_flammability() -> int:
 
 func get_status_description() -> String:
 	return "a log"
+
+func use(target:Node) -> String:
+	if !target.has_method("dropped_on"):
+		return "[Error] target is not usable with log"
+
+	# using a log on a target is the equivelent of dropping it
+	target.dropped_on(self)
+	return "used"

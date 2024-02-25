@@ -35,7 +35,6 @@ func _physics_process(delta) -> void:
 		print("Target reached")
 		_moving_to_destination = false
 		arrived_at_destination.emit()
-		print("Emitted arriving")
 		return
 	
 	var move_direction: Vector2 = global_position.direction_to(_navigation_agent.get_next_path_position()).normalized()
@@ -76,7 +75,7 @@ func use_held_item(heldItemName:String, targetObject:Node2D) -> String:
 	var itemToUse = get_node(heldItemName)
 
 	if (!itemToUse.has_method("use")):
-		return ("item " + heldItemName + "does not have a use method")
+		return ("[Error] item " + heldItemName + "does not have a use method")
 
 	itemToUse.use(targetObject) # using some duck-typing here
 

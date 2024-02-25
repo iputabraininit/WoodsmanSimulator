@@ -402,23 +402,23 @@ position = Vector2(0, -13.065)
 scale = Vector2(8, 8)
 texture = SubResource("AtlasTexture_oxhnk")
 
-[node name="fire" type="Node2D" parent="WorldItems" groups=["move_target"]]
+[node name="campfire" type="Node2D" parent="WorldItems" groups=["move_target"]]
 position = Vector2(644, 921)
 script = ExtResource("7_fd2fx")
 
-[node name="Sprite2D" type="Sprite2D" parent="WorldItems/fire"]
+[node name="Sprite2D" type="Sprite2D" parent="WorldItems/campfire"]
 position = Vector2(1, 0)
 scale = Vector2(9.23, 8)
 texture = SubResource("AtlasTexture_ns1p0")
 
-[node name="SmokeParticles" type="GPUParticles2D" parent="WorldItems/fire"]
+[node name="SmokeParticles" type="GPUParticles2D" parent="WorldItems/campfire"]
 amount_ratio = 0.3
 process_material = SubResource("ParticleProcessMaterial_6ncuw")
 texture = ExtResource("8_oob6j")
 lifetime = 3.0
 randomness = 0.42
 
-[node name="FireParticles" type="GPUParticles2D" parent="WorldItems/fire"]
+[node name="FireParticles" type="GPUParticles2D" parent="WorldItems/campfire"]
 material = SubResource("CanvasItemMaterial_arnhk")
 emitting = false
 amount = 20
@@ -426,7 +426,7 @@ process_material = SubResource("ParticleProcessMaterial_yyr2w")
 texture = ExtResource("9_akoaq")
 lifetime = 1.5
 
-[node name="MoveTargetable" parent="WorldItems/fire" instance=ExtResource("10_r5q6g")]
+[node name="MoveTargetable" parent="WorldItems/campfire" instance=ExtResource("10_r5q6g")]
 
 [node name="axe" type="Node2D" parent="WorldItems" groups=["move_target", "pickupable", "usable"]]
 position = Vector2(800, 600)
@@ -453,4 +453,3 @@ texture = SubResource("AtlasTexture_66p7d")
 shape = SubResource("CircleShape2D_xhb1n")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="Avatar"]
-debug_enabled = true

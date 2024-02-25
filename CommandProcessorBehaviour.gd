@@ -23,26 +23,35 @@ func _process(delta):
 # A new command could have come in from the UI, or Websocket
 # This script should be agnostic on where the command has come from.
 func _on_new_command(command, arguments):
-#	print("Command processor recieved ", command, " ", arguments)
+	print(command, " ", arguments)
+
+	if !does_command_exist(command):
+		on_command_response.emit("[Error] Command '" + command + "' is unknown.")
+		return
+
 	var expression = Expression.new()
 	
-	for i in arguments.size():
-		arguments[i] = "'" + arguments[i] + "'"
-		
-	var joinedArguments = ", ".join(arguments)
-	var fullCommandToExecute = command + "(" + joinedArguments + ")"
+	var fullCommandToExecute = command + "('" + arguments + "')"
+	print(fullCommandToExecute)
 	expression.parse(fullCommandToExecute)
 
 	var result = await expression.execute([], self)
 
+	if result == null:
+		result = "[Error] unknown error, is that the right command?"
+	
+	print("result: " + result)
 	on_command_response.emit(result)
 	
-func moveto(locationName: String) -> String:
+func moveto(locationName: String = "none") -> String:
 	print("Moving to ", locationName)
+	if locationName == "none":
+		return "[Error] no destination specificied"
+
 	# let's find the location, and then ask the avatar to move to it
 	var foundNode = world_items_node.get_node(locationName)
 	if foundNode == null:
-		return "No destination found with name " + locationName
+		return "[Error] No destination found with name " + locationName
 	
 	target_avatar.moveto(foundNode.position)
 	await target_avatar.arrived_at_destination
@@ -54,13 +63,13 @@ func pickup(itemName: String) -> String:
 	
 	var foundNode = world_items_node.get_node(itemName)
 	if foundNode == null:
-		return "No object found with name " + itemName
+		return "[Error] No object found with name " + itemName
 	
 	if !foundNode.is_in_group("pickupable"):
-		return itemName + " is not able to be picked up."
+		return "[Error] " + itemName + " is not able to be picked up."
 	
 	if !target_avatar.close_enough_for_interaction(foundNode):
-		return itemName + " is not close enough to be picked up."	
+		return "[Error] " + itemName + " is not close enough to be picked up."
 		
 	world_items_node.remove_child(foundNode)	
 	target_avatar.pickup(foundNode)
@@ -68,7 +77,7 @@ func pickup(itemName: String) -> String:
 	
 func drop(itemName: String) -> String:
 	if !target_avatar.is_holding_object(itemName):
-		return itemName + " can't be dropped as it's not being held."
+		return "[Error] " + itemName + " can't be dropped as it's not being held."
 		
 	var droppedNode:Node2D = target_avatar.drop(itemName)
 	# loop through all world items and see if any object is a drop target, and the
@@ -97,16 +106,23 @@ func drop(itemName: String) -> String:
 
 
 
-func use(heldItemName: String, targetWorldItemName: String) -> String:
+func use(heldItemAndTargetItemNames: String) -> String:
+	var arguments = heldItemAndTargetItemNames.split(" ")
+	if arguments.size() != 2:
+		return "[Error] Both held item and target item names need to be provided"
+
+	var heldItemName = arguments[0]
+	var targetWorldItemName = arguments[1]
+
 	var foundWorldNode = world_items_node.get_node(targetWorldItemName)
 	if foundWorldNode == null:
-		return "No object found with name " + heldItemName
+		return "[Error] No object found with name " + targetWorldItemName
 
 	if (!target_avatar.close_enough_for_interaction(foundWorldNode)):
-		return targetWorldItemName + " is not close enough to be interacted with"
+		return "[Error] " + targetWorldItemName + " is not close enough to be interacted with"
 
 	if (!target_avatar.is_holding_object(heldItemName)):
-		return heldItemName + "cannot be used as it's not being held."
+		return "[Error] " + heldItemName + 	"cannot be used as it's not being held."
 
 	return target_avatar.use_held_item(heldItemName, foundWorldNode)
 
@@ -126,7 +142,7 @@ func reset(epoch_title: String) -> String:
 	return "reset world status for epoch " + epoch_title
 	
 
-func status() -> String:
+func status(item: String = "none") -> String:
 	var status_text: String      = "You are in a wooded clearing. There is "
 	var world_items: Array[Node] = world_items_node.get_children()
 
@@ -136,4 +152,9 @@ func status() -> String:
 
 	return status_text
 
+func does_command_exist(command: String) -> bool:
+	for method in get_method_list():
+		if (method.get("name") == command):
+			return true
 
+	return false

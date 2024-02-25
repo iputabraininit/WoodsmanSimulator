@@ -28,7 +28,7 @@ func _process(_delta):
 			print(payload)
 			var splitCommands = payload.split(" ",  false)
 			var command = splitCommands[0]
-			var arguments = splitCommands.slice(1)
+			var arguments = " ".join(splitCommands.slice(1))
 			on_new_command_recieved.emit(command, arguments)
 
 			

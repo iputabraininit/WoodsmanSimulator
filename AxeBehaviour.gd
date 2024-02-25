@@ -7,7 +7,7 @@ func _ready():
 
 func use(target:Node) -> String:
 	if !target.has_method("damage"):
-		return "target is not damageable"
+		return "[Error] target is not damageable"
 
 	target.damage(DAMAGE)
 	return "damaged"

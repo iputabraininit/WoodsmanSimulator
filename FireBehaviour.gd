@@ -17,7 +17,7 @@ func get_status_description() -> String:
 	if fueled:
 		return "a roaring campfire"
 	else:
-		return "a smouldering campfire"
+		return "a campfire"
 	
 func overlaps(to_be_dropped:Node2D) -> bool:
 	var overlap_distance = global_position.distance_to(to_be_dropped.global_position)
