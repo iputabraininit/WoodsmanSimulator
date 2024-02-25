@@ -15,3 +15,6 @@ Download Godot, and open the project.
 
 ### Running
 Run the main `root_scene.tscn`.
+
+### Credits
+Uses Tiny and Particle assets from Kenny.nl: https://www.kenney.nl/assets
